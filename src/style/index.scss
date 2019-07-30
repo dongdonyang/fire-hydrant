@@ -1,0 +1,19 @@
+html,body{
+height: 100%;
+  margin: 0;
+  padding: 0;
+  color: #fff; // 设置默认字体颜色
+  background-color: #00060e;
+}
+#app{
+  height: 100%;
+  &>:first-child{
+    height: 100%;
+  }
+}
+
+// 输入框样式
+.el-input__inner{
+  background-color: #33528c !important;
+  border-color: #33528c !important;
+}
