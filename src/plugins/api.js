@@ -5,6 +5,9 @@ const API = {
   GET_HYRANT_SET: `${base}HydrantAlarm/GetHyrantSet`, //获区消火栓设置
   UPDATE_HYRANT_SET: `${base}HydrantAlarm/UpdateHyrantSet`, //更新消火栓设置
   GET_AREA_HYDRANT: `${base}HydrantAlarm/GetAreaHydrant`, //获取区域消火栓列表
-  GET_AREA_HYDRANT_ALARM_LIST: `${base}HydrantAlarm/GetAreaHydrantAlarmlist` //获区域取消火栓报警列表
+  GET_AREA_HYDRANT_ALARM_LIST: `${base}HydrantAlarm/GetAreaHydrantAlarmlist`, //获区域取消火栓报警列表
+  USER_LOGIN: `${base}HydrantUser/UserLogin`, //      用户登录(PC端)
+  USER_LOGOUT: `${base}HydrantUser/UserLogout`, //      注销用户
+  GET_VERIFY_CODE: `${base}HydrantUser/GetVerifyCode` //      获取验证码
 };
 export default API;

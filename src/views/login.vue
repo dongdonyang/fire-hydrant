@@ -1,21 +1,34 @@
 <template>
   <div class="login">
     <div>
-      <el-form label-width="38px" :model="form">
-        <el-form-item>
-          <el-input v-model="form.name" placeholder="请输入您的用户名">
+      <el-form label-width="38px" :model="form" :rules="rules" ref="form">
+        <el-form-item prop="account">
+          <el-input v-model="form.account" placeholder="请输入您的用户名">
             <img slot="prefix" src="../assets/login-form-3.png" alt="" />
           </el-input>
         </el-form-item>
-        <el-form-item>
-          <el-input v-model="form.region" placeholder="请输入您的密码">
+        <el-form-item prop="password">
+          <el-input
+            type="password"
+            v-model="form.password"
+            placeholder="请输入您的密码"
+          >
             <img slot="prefix" src="../assets/login-form-1.png" alt="" />
           </el-input>
         </el-form-item>
-        <el-form-item>
-          <el-input v-model="form.type" placeholder="请输入验证码">
-            <img slot="prefix" src="../assets/login-form-2.png" alt="" />
+        <!--          验证码-->
+        <el-form-item prop="verifyCode" class="login-code">
+          <el-input
+            @keyup.enter.native="login"
+            placeholder="请输入验证码"
+            v-model="form.verifyCode"
+          >
+            <i slot="prefix" class="el-input__icon el-icon-key"></i>
           </el-input>
+          <img :src="imgUrl" alt="" />
+          <el-button @click="getCode" type="text" class="el-icon-refresh"
+            >换一张</el-button
+          >
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submit">登录</el-button>
@@ -42,18 +55,54 @@ export default {
   props: {},
   data() {
     return {
+      imgUrl: "",
       message:
         "粤公网安备 44010502000715号 | Copyright © 2010-2019广州凡科互联网科技股份有限公司 粤ICP备10235580号",
-      form: {}
+      form: {},
+      rules: {
+        account: [{ required: true, message: "请输入用户名" }],
+        password: [{ required: true, message: "请输入用户密码" }],
+        verifyCode: [{ required: true, message: "请输入验证码" }]
+      }
     };
   },
   computed: {},
   watch: {},
-  created() {},
+  created() {
+    this.getCode();
+  },
   mounted() {},
   methods: {
+    // todo 获取验证码、处理二进制流图片的显示问题
+    getCode() {
+      this.axios
+        .get(this.API.GET_VERIFY_CODE, {
+          responseType: "blob"
+        })
+        .then(res => {
+          this.imgUrl = window.URL.createObjectURL(res);
+        });
+    },
     //    todo 登录
-    submit() {}
+    submit() {
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          this.$axios.post(this.API.USER_LOGIN, this.form).then(res => {
+            if (res.result.success) {
+              sessionStorage.setItem("userInfo", JSON.stringify(res.result));
+              this.$store.commit("setUserInfo", res.result, 1);
+              this.$cookies.set("isLogin", 1);
+              this.$cookies.set("userInfo", JSON.stringify(res.result));
+              this.$router.push({
+                name: "home"
+              });
+            } else {
+              this.$message.error(res.result.failCause);
+            }
+          });
+        }
+      });
+    }
   }
 };
 </script>
@@ -83,11 +132,17 @@ export default {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      /*.el-input__prefix{*/
+      /*  display: flex;*/
+      /*}*/
       & > div {
         margin-bottom: 0;
         button {
           width: 100%;
         }
+      }
+      .login-code div {
+        display: flex;
       }
     }
   }
@@ -97,6 +152,16 @@ export default {
     position: absolute;
     bottom: 0;
     width: 100vw;
+    color: #88cbff;
+    font-size: 12px;
+    p {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img {
+        margin: auto 5px;
+      }
+    }
   }
 }
 </style>

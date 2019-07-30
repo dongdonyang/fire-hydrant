@@ -141,7 +141,6 @@ export default {
           // 设置查询行政区级别为 区
           level: "district"
         });
-
         district.search("成华区", function(status, result) {
           // 获取朝阳区的边界信息
           let bounds = result.districtList[0].boundaries;

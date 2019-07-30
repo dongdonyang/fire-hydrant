@@ -9,7 +9,7 @@ const router = new Router({
     {
       path: "/",
       name: "home",
-      component: () => import("./views")
+      component: () => import("./views/login")
     },
     //  登录页
     {
