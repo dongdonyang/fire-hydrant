@@ -21,6 +21,7 @@
 export default {
   name: "BaseAsider",
   components: {},
+  model: {},
   props: {},
   data() {
     return {
@@ -44,7 +45,7 @@ export default {
     getList() {
       this.axios
         .get(this.API.GET_USER_AREA_FOR_PC, {
-          params: { UserID: 1 }
+          params: { UserID: this.$store.state.userInfo.userId }
         })
         .then(res => {
           if (res.success) {
@@ -53,6 +54,7 @@ export default {
               areaID: this.titleId,
               sonlist: this.menuList
             } = res.result);
+            this.$emit("getList", this.titleId);
           }
         });
     }

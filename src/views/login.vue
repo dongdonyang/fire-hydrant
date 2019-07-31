@@ -19,8 +19,8 @@
         <!--          验证码-->
         <el-form-item prop="verifyCode" class="login-code">
           <el-input
-            @keyup.enter.native="login"
-            placeholder="请输入验证码"
+            @keyup.enter.native="submit"
+            placeholder="验证码"
             v-model="form.verifyCode"
           >
             <i slot="prefix" class="el-input__icon el-icon-key"></i>
@@ -88,16 +88,17 @@ export default {
       this.$refs.form.validate(valid => {
         if (valid) {
           this.$axios.post(this.API.USER_LOGIN, this.form).then(res => {
-            if (res.result.success) {
-              sessionStorage.setItem("userInfo", JSON.stringify(res.result));
-              this.$store.commit("setUserInfo", res.result, 1);
+            let r = res.result;
+            if (r.success) {
+              sessionStorage.setItem("userInfo", JSON.stringify(r));
+              this.$store.commit("setUserInfo", r);
               this.$cookies.set("isLogin", 1);
-              this.$cookies.set("userInfo", JSON.stringify(res.result));
+              this.$cookies.set("userInfo", JSON.stringify(r));
               this.$router.push({
                 name: "home"
               });
             } else {
-              this.$message.error(res.result.failCause);
+              this.$message.error(r.failCause);
             }
           });
         }
@@ -132,9 +133,6 @@ export default {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      /*.el-input__prefix{*/
-      /*  display: flex;*/
-      /*}*/
       & > div {
         margin-bottom: 0;
         button {
@@ -143,6 +141,9 @@ export default {
       }
       .login-code div {
         display: flex;
+        & > :nth-child(3) {
+          width: 58px;
+        }
       }
     }
   }
