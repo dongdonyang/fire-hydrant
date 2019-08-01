@@ -4,7 +4,7 @@
     :visible.sync="show"
     width="800px"
     center
-    title="消火栓详情"
+    :title="title"
     :show-close="false"
   >
     <img
@@ -28,7 +28,8 @@ export default {
   props: {},
   data() {
     return {
-      show: false
+      show: false,
+      title: "标题"
     };
   },
   computed: {},

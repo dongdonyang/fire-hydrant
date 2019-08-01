@@ -40,6 +40,7 @@ export default {
     //
     handleSelect(index) {
       console.log(index);
+      this.$emit("getList", index);
     },
     //    todo 获取菜单列表
     getList() {

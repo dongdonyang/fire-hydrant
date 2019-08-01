@@ -5,6 +5,7 @@ import store from "./store";
 // 引入插件
 import "./plugins/element";
 import "./plugins/axios";
+import "./plugins/BaseComponents";
 import Cookies from "js-cookie";
 
 Vue.prototype.$cookies = Cookies;

@@ -6,12 +6,13 @@
       :prop="item.prop"
       :label="item.label"
       align="center"
+      show-overflow-tooltip
     >
       <template slot-scope="scope">
         <!--            todo 操作-->
         <span v-if="!item.prop">
           <el-button
-            @click="getDetail(scope.row.id, $event)"
+            @click="getDetail(scope.row, $event)"
             size="mini"
             type="text"
             icon="el-icon-search"
@@ -75,6 +76,9 @@ el-table th,
 .el-table tr {
   background-color: transparent;
   color: #fff;
+}
+.el-table::before {
+  background-color: #025691;
 }
 /*todo hover*/
 .el-table--enable-row-hover .el-table__body tr:hover > td {
