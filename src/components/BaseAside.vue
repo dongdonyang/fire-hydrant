@@ -65,8 +65,12 @@ export default {
 
 <style lang="scss">
 .base-aside {
+  position: absolute;
+  width: 140px;
+  left: -18px;
+  z-index: 9999;
   height: 100%;
-  background-color: #00060e;
+  background-color: transparent;
   border-right-width: 0;
   .el-menu-item {
     text-align: center;

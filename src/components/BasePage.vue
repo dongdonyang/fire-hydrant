@@ -1,5 +1,5 @@
 <template>
-  <div class="base-page">
+  <div class="base-page" v-if="propPag.total">
     <el-pagination
       background
       :pager-count="5"

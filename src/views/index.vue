@@ -4,9 +4,7 @@
       <base-header></base-header>
     </el-header>
     <el-container>
-      <el-aside width="140px">
-        <base-aside @getList="setAreaId"></base-aside>
-      </el-aside>
+      <base-aside @getList="setAreaId"></base-aside>
       <el-main>
         <base-map></base-map>
         <div class="home-index-tab">
@@ -84,26 +82,48 @@ export default {
 .home-index {
   /*选项卡*/
   &-tab {
-    margin-left: 10px;
+    position: absolute;
+    right: 0px;
+    height: 100%;
+    .el-tabs__nav {
+      border-color: #2495e6 !important;
+    }
     .el-tabs__item {
       width: 183px !important;
       text-align: center;
       color: #fff;
+      border-color: #2495e6 !important;
     }
     .is-active {
       background-color: #2495e6;
+    }
+    /*分局置于末尾*/
+    .el-tabs {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      .el-tabs__content {
+        flex: 2 0 auto;
+        & > div {
+          height: 100%;
+          & > div {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+          }
+        }
+      }
     }
   }
 }
 .el-header {
   padding: 0;
-  margin-bottom: 10px;
 }
 /*内容*/
 .el-main {
-  margin-left: 10px;
+  height: 100%;
+  padding: 0;
   background-color: #00060e;
-  padding: 10px;
   display: flex;
   & > :nth-child(1) {
     flex: 1 0 auto;

@@ -1,5 +1,5 @@
 <template>
-  <el-table class="base-table" :data="tableData" style="width: 100%">
+  <el-table class="base-table" :data="tableData">
     <el-table-column
       v-for="(item, index) in tableColumn"
       :key="index"
@@ -59,6 +59,10 @@ export default {
 </script>
 
 <style lang="scss">
+.base-table {
+  width: 100%;
+  flex: 1;
+}
 .el-table th {
   background-color: #1d477b;
   color: #a2ecff;
@@ -78,7 +82,7 @@ el-table th,
   color: #fff;
 }
 .el-table::before {
-  background-color: #025691;
+  background-color: transparent;
 }
 /*todo hover*/
 .el-table--enable-row-hover .el-table__body tr:hover > td {
