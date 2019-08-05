@@ -13,7 +13,8 @@ export default {
   props: {},
   data() {
     return {
-      map: Object
+      map: Object,
+      spots: []
     };
   },
   computed: {},
@@ -21,6 +22,8 @@ export default {
   created() {},
   mounted() {
     this.newMap();
+    this.getSpotMore();
+    this.setArea();
   },
   methods: {
     // todo 初始化地图
@@ -28,7 +31,37 @@ export default {
       this.map = new AMap.Map("baseMap", {
         resizeEnable: true, //是否监控地图容器尺寸变化
         zoom: 11, //初始化地图层级
-        mapStyle: "amap://styles/darkblue"
+        mapStyle: "amap://styles/darkblue", // 地图风格、极夜蓝
+        showLabel: false
+      });
+    },
+    getUnitInfo() {},
+    // todo 获取地图点的标记、标记点
+    getSpotMore() {
+      let that = this;
+      this.$axios.get(this.API.GET_HYDRANT_BREATHING_BUBBLE).then(res => {
+        console.log(res);
+        this.spots = res;
+        let spotArray = [];
+        // 创建 AMap.Icon 实例：
+        let icon = new AMap.Icon({
+          size: new AMap.Size(40, 50), // 图标尺寸
+          image:
+            "//datav.oss-cn-hangzhou.aliyuncs.com/uploads/images/32a60b3e7d599f983aa1a604fb640d7e.gif" // Icon的图像
+        });
+        for (let item of res) {
+          // todo 创建标记点
+          let marker = new AMap.Marker({
+            position: new AMap.LngLat(item.lng, item.lat), // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+            title: item.info,
+            offset: new AMap.Pixel(-10, -10),
+            icon: icon
+          });
+          marker.item = item; // 自定义参数
+          marker.on("click", that.getUnitInfo);
+          spotArray.push(marker);
+        }
+        this.map.add(spotArray);
       });
     },
     // todo 行政区的划分
@@ -42,6 +75,7 @@ export default {
           // 设置查询行政区级别为 区
           level: "district"
         });
+
         district.search("成华区", function(status, result) {
           // 获取朝阳区的边界信息
           let bounds = result.districtList[0].boundaries;

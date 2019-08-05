@@ -20,8 +20,12 @@
               v-for="(item, index) in formList"
               :key="index"
               :label="item.label"
-              >{{ form[item.value] }}</el-form-item
             >
+              <div v-if="index === 5">
+                {{ `剩余电量 ${form[item.value]}%` }}
+              </div>
+              <div v-else>{{ form[item.value] }}</div>
+            </el-form-item>
           </el-form>
         </div>
         <div>
@@ -66,7 +70,9 @@ export default {
   data() {
     return {
       //todo 表单
-      form: {},
+      form: {
+        position: ""
+      },
       formList: [
         {
           label: "编号：",
@@ -78,19 +84,22 @@ export default {
         },
         {
           label: "位置：",
-          value: ""
+          value: "position"
         },
         {
           label: "状态：",
-          value: ""
+          value: "status"
         },
         {
           label: "水压：",
           value: "pressure"
         },
         {
+          img: require("../assets/electric.png"),
           label: "电量：",
-          value: "dumpEnergy"
+          info: "剩余电量 ",
+          value: "dumpEnergy",
+          unit: "%"
         }
       ],
       //  todo 报警历史
@@ -106,7 +115,8 @@ export default {
           },
           {
             prop: "handleStatus",
-            label: "状态"
+            label: "状态",
+            map: "policeRecord"
           }
         ],
         table: [],
@@ -129,11 +139,13 @@ export default {
           },
           {
             prop: "dumpEnergy",
-            label: "电量"
+            label: "电量",
+            unit: "%"
           },
           {
             prop: "status",
-            label: "状态"
+            label: "状态",
+            map: "hydrantStatus"
           },
           {
             label: "详情"
@@ -186,6 +198,13 @@ export default {
             this.getHistory();
             this.getHisPress(item.id);
             this.form = res.result;
+            //todo 根据经纬度获取具体位置信息
+            this.$store.dispatch("getPositionName", res.result).then(res => {
+              console.log(res.data);
+              let p = res.data.regeocode.formatted_address;
+              this.form.position = p.length ? p : "未获取到位置信息";
+            });
+
             this.$refs.hydrantDetail.show = true;
             this.$refs.hydrantDetail.title = "消火栓详情";
           }
@@ -301,7 +320,7 @@ export default {
       }
       & > :nth-child(3),
       :last-child {
-        min-width: 100%;
+        width: 100%;
       }
     }
   }

@@ -44,7 +44,7 @@ export default {
         page: {
           current: 1,
           total: 0,
-          MaxResultCount: 10
+          MaxResultCount: 8
         }
       }
     };

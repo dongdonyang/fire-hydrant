@@ -19,14 +19,24 @@
         <sub-title title="水压报警阈值设置"></sub-title>
         <div class="base-header-dia-main">
           <span>上限：</span>
-          <el-input v-model="form.pressureMin">
+          <el-input
+            type="number"
+            step="0.01"
+            max="999"
+            v-model="form.pressureMin"
+          >
             <span slot="suffix">KPa</span>
           </el-input>
           <span>高于设定值则报警，不填写表示无上限</span>
         </div>
         <div class="base-header-dia-main">
           <span>下限：</span>
-          <el-input v-model="form.pressureMax">
+          <el-input
+            type="number"
+            step="0.01"
+            min="-999"
+            v-model="form.pressureMax"
+          >
             <span slot="suffix">KPa</span>
           </el-input>
           <span>低于设定值则报警，不填写表示无下限</span>
@@ -34,7 +44,13 @@
         <sub-title title="电池电量报警阈值设置"></sub-title>
         <div class="base-header-dia-main">
           <span>下限：</span>
-          <el-input v-model="form.dumpEnergy">
+          <el-input
+            type="number"
+            step="1"
+            min="0"
+            max="100"
+            v-model="form.dumpEnergy"
+          >
             <span slot="suffix">%</span>
           </el-input>
           <span>低于设定值则报警，不填写表示无下限</span>
@@ -49,7 +65,7 @@
     <el-dialog :visible.sync="show" class="base-header-out" center>
       <div>你确定要注销吗？</div>
       <div>
-        <el-button @click="show=false">取消</el-button>
+        <el-button @click="show = false">取消</el-button>
         <el-button @click="logout">确定</el-button>
       </div>
     </el-dialog>
@@ -79,10 +95,15 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    //  todo 设置
+    // todo 获取消火栓设置
     setting() {
-      this.$refs.BaseDialog.show = true;
-      this.$refs.BaseDialog.title = "系统设置";
+      this.axios.get(this.API.GET_HYRANT_SET).then(res => {
+        if (res.success) {
+          this.form = res.result;
+          this.$refs.BaseDialog.show = true;
+          this.$refs.BaseDialog.title = "系统设置";
+        }
+      });
     },
     // todo 提交
     submit() {
@@ -178,7 +199,6 @@ export default {
     &-main {
       margin: 30px auto;
       display: flex;
-      justify-content: space-around;
       align-items: center;
       /* 单位垂直居中*/
       .el-input__suffix {
@@ -189,7 +209,8 @@ export default {
         font-size: 14px;
       }
       & > :nth-child(2) {
-        width: 300px;
+        width: 120px;
+        margin: 0 20px;
       }
       & > :nth-child(3) {
         color: #86afe8;

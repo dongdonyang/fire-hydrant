@@ -1,5 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import axios from "axios";
+import API from "./plugins/api";
 
 Vue.use(Vuex);
 
@@ -16,5 +18,13 @@ export default new Vuex.Store({
       state.token = token;
     }
   },
-  actions: {}
+  actions: {
+    //  todo 经纬度=》具体位置、使用的事web服务、返回一个promise对象、方便使用
+    getPositionName(context, place) {
+      let url = `http://restapi.amap.com/v3/geocode/regeo?key=e86bd3cdfc91ca7a46c44ddf62e1d80f&location=${
+        place.lng
+      },${place.lat}`;
+      return axios.get(url)
+    }
+  }
 });

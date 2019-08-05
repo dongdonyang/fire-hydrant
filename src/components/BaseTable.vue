@@ -15,12 +15,21 @@
             @click="getDetail(scope.row, $event)"
             size="mini"
             type="text"
-            icon="el-icon-search"
+            icon="el-icon-document"
             >详情</el-button
           >
         </span>
+
+        <!--          todo 中文映射表map]-->
+        <span
+          v-else-if="item.map"
+          :class="getName(scope.row[item.prop], item, 'className')"
+        >
+          {{ getName(scope.row[item.prop], item, "label") }}
+        </span>
+
         <!--          todo 默认数据-->
-        <span v-else>{{ scope.row[item.prop] }}</span>
+        <span v-else>{{ scope.row[item.prop] }}{{ item.unit }}</span>
       </template>
     </el-table-column>
   </el-table>
@@ -39,13 +48,75 @@ export default {
     tableColumn: Array
   },
   data() {
-    return {};
+    return {
+      //  消火栓状态
+      hydrantStatus: [
+        {
+          label: "未指定",
+          value: 0
+        },
+        {
+          label: "在线",
+          value: 1,
+          className: "normal"
+        },
+        {
+          label: "离线",
+          value: -1,
+          className: "correctNow"
+        },
+        {
+          label: "异常",
+          value: -2,
+          className: "shutDown"
+        },
+        {
+          label: "部分离线",
+          value: -3,
+          className: "shutDown"
+        }
+      ],
+      //  警情状态
+      policeRecord: [
+        {
+          label: "未定义",
+          value: 0
+        },
+        {
+          label: "待处理",
+          value: 1,
+          className: "correctNow"
+        },
+        {
+          label: "处理中",
+          value: 2,
+          className: "correct"
+        },
+        {
+          label: "已解决",
+          value: 3,
+          className: "normal"
+        }
+      ]
+    };
   },
   computed: {},
   watch: {},
   created() {},
   mounted() {},
   methods: {
+    /**
+     *@fileOverview 获取中文 /获取样式 样式映射表，根据不同的类型和不同的值返回不同的class样式name
+     * @param val 当前行对象的具体数字、可能是数字、中文、来赋上不同颜色
+     * @param item columnList对象中的map匹配对象名称
+     * @param nature 返回label中文名还是classname样式名
+     */
+    getName(val, item, nature) {
+      let name = this[item.map].find(i => {
+        return i.value === val;
+      });
+      return name ? name[nature] : "";
+    },
     /**
      *@fileOverview 获取当前行对象详情
      * @param id 行对象id
@@ -92,5 +163,25 @@ el-table th,
 .el-table td,
 .el-table th.is-leaf {
   border-color: #025691;
+}
+/*  todo 中文样式映射表、为了最大的扩展性、虽然现在只存在颜色不同、但这种情况下可以添加各种不同的样式、比单独传一个颜色值要好的多*/
+/* 单位列表部分名称显示为黄色*/
+.badName {
+  color: #e6a23c;
+}
+.normal {
+  color: #67c23a;
+}
+.shutDown {
+  color: #f56c6c;
+}
+.correct {
+  color: chocolate;
+}
+.correctNow {
+  color: #e6a23c;
+}
+.off-line {
+  color: #f56c6c;
 }
 </style>
