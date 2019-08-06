@@ -1,10 +1,12 @@
 <template>
   <div class="hydrant-list">
+    <!--    todo list-->
     <base-table
       @getDetail="getHydrantDetail"
       :table-column="tableHydrant.column"
       :table-data="tableHydrant.table"
     ></base-table>
+    <!--    todo 分页-->
     <base-page
       v-bind:prop-pag.sync="tableHydrant.page"
       @currentChange="getRecordList"
@@ -13,6 +15,7 @@
     <!--    todo 消火栓详情-->
     <base-dialog ref="hydrantDetail">
       <div class="hydrant-list-hydrant">
+        <!--        todo 基本信息-->
         <div>
           <sub-title title="基本信息"></sub-title>
           <el-form>
@@ -21,13 +24,18 @@
               :key="index"
               :label="item.label"
             >
-              <div v-if="index === 5">
+              <div v-if="index === 5" class="hydrant-list-hydrant-ele">
                 {{ `剩余电量 ${form[item.value]}%` }}
+              </div>
+              <div v-else-if="index === 3">
+                {{ getStatus[form[item.value]] }}
               </div>
               <div v-else>{{ form[item.value] }}</div>
             </el-form-item>
           </el-form>
         </div>
+
+        <!--        todo 历史警情list-->
         <div>
           <sub-title title="历史警情"></sub-title>
           <base-table
@@ -39,12 +47,17 @@
             @currentChange="getHistory"
           ></base-page>
         </div>
+
+        <!--        todo 图表-->
         <div>
-          <sub-title title="一周水泵"></sub-title>
+          <sub-title title="一周水压"></sub-title>
           <div id="myChart" style="height: 100%;width: 100%"></div>
         </div>
       </div>
     </base-dialog>
+
+    <!--    todo 地图-->
+    <base-map @getDetail="getHydrantDetail" :is-show="false"></base-map>
   </div>
 </template>
 
@@ -56,12 +69,14 @@
 import BaseTable from "../components/BaseTable";
 import BaseDialog from "../components/BaseDialog";
 import BasePage from "../components/BasePage";
+import BaseMap from "../components/BaseMap";
 export default {
   name: "HydrantList",
   components: {
     BaseTable,
     BaseDialog,
-    BasePage
+    BasePage,
+    BaseMap
   },
   props: {
     activeName: String,
@@ -69,6 +84,13 @@ export default {
   },
   data() {
     return {
+      getStatus: {
+        0: "未指定",
+        1: "正常在线",
+        "-1": "部分离线",
+        "-2": "异常",
+        "-3": "离线"
+      },
       //todo 表单
       form: {
         position: ""
@@ -121,7 +143,7 @@ export default {
         ],
         table: [],
         page: {
-          MaxResultCount: 6,
+          MaxResultCount: 8,
           current: 1,
           total: 0
         }
@@ -286,11 +308,10 @@ export default {
   flex-direction: column;
   /*消火栓*/
   &-hydrant {
-    height: 446px;
     width: 760px;
     display: grid;
-    grid-template-columns: 376px 376px;
-    grid-template-rows: 226px 226px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 0.5fr 1.1fr;
     grid-gap: 10px;
     & > :nth-child(2) {
       grid-column-start: 2;
@@ -322,6 +343,11 @@ export default {
       :last-child {
         width: 100%;
       }
+    }
+    /*电量图标*/
+    &-ele::before {
+      content: none;
+      background-image: url("../assets/electric.png");
     }
   }
 }

@@ -37,7 +37,7 @@ export default {
   },
   mounted() {},
   methods: {
-    //
+    // todo 选择某个菜单
     handleSelect(index) {
       console.log(index);
       this.$emit("getList", index);
@@ -55,6 +55,7 @@ export default {
               areaID: this.titleId,
               sonlist: this.menuList
             } = res.result);
+            // 初始化页面数据
             this.$emit("getList", this.titleId);
           }
         });
@@ -68,10 +69,12 @@ export default {
   background-color: transparent;
   position: absolute;
   width: 140px;
-  left: 5px;
-  z-index: 9999;
+  left: 0;
+  z-index: 1;
   border-right-width: 0;
   .el-menu-item {
+    height: 44px;
+    line-height: 44px;
     text-align: center;
     color: #718fab;
   }

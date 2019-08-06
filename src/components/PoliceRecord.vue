@@ -40,12 +40,13 @@
                     recordForm.problemRemark
                 "
               >
-                <audio
-                  style="width: 216px;height: 40px;"
-                  :src="`http://fd.sctsjkj.com:5081${recordForm.problemRemark}`"
-                  controls="controls"
-                >
-                  Your browser does not support the audio element.
+                <audio style="width: 216px;height: 40px;" controls="controls">
+                  <source
+                    :src="
+                      `http://fd.sctsjkj.com:5081${recordForm.problemRemark}`
+                    "
+                    type="audio/amr"
+                  />
                 </audio>
               </div>
               <!--              文字备注-->
@@ -256,6 +257,12 @@ export default {
     :nth-child(4) {
       min-width: 100%;
     }
+  }
+  .el-icon-full-screen,
+  .el-icon-c-scale-to-original,
+  .el-image-viewer__btn,
+  .el-image-viewer__next {
+    min-width: 0 !important;
   }
 }
 </style>

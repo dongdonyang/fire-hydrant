@@ -8,12 +8,13 @@
       <el-button type="text" @click="setting"
         ><img src="../assets/head_img_02.png"
       /></el-button>
-      <el-button type="text" @click="sure"
+      <el-button type="text" @click="show = true"
         ><img src="../assets/head_img_03.png"
       /></el-button>
     </div>
 
     <!--    todo 系统设置-->
+<!--    todo 写法可以优化成for循环-->
     <base-dialog ref="BaseDialog">
       <div class="base-header-dia">
         <sub-title title="水压报警阈值设置"></sub-title>
@@ -63,7 +64,7 @@
 
     <!--    todo 退出弹窗-->
     <el-dialog :visible.sync="show" class="base-header-out" center>
-      <div>你确定要注销吗？</div>
+      <div>您确定要注销吗 ？</div>
       <div>
         <el-button @click="show = false">取消</el-button>
         <el-button @click="logout">确定</el-button>
@@ -113,10 +114,6 @@ export default {
           this.$refs.BaseDialog.show = false;
         }
       });
-    },
-    //todo 退出前的确认
-    sure() {
-      this.show = true;
     },
     //  todo 退出
     logout() {

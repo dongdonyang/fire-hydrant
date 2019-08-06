@@ -83,9 +83,9 @@ export default {
   /*选项卡*/
   &-tab {
     position: absolute;
-    right: 10px;
-    top: 86px;
-    height: calc(100vh - 274px);
+    right: 15px;
+    top: 80px;
+    /*height: calc(100vh - 400px);*/
     .el-tabs__nav {
       border-color: #2495e6 !important;
     }

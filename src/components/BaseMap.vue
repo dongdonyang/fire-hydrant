@@ -10,7 +10,12 @@
 export default {
   name: "BaseMap",
   components: {},
-  props: {},
+  props: {
+    isShow: {
+      type: Boolean,
+      default: true
+    }
+  },
   data() {
     return {
       map: Object,
@@ -21,9 +26,9 @@ export default {
   watch: {},
   created() {},
   mounted() {
-    this.newMap();
-    this.getSpotMore();
-    this.setArea();
+    this.isShow || this.newMap();
+    this.isShow || this.getSpotMore();
+    this.isShow || this.setArea();
   },
   methods: {
     // todo 初始化地图
@@ -35,7 +40,9 @@ export default {
         showLabel: false
       });
     },
-    getUnitInfo() {},
+    getUnitInfo(val) {
+      this.$emit("getDetail", val.target.item);
+    },
     // todo 获取地图点的标记、标记点
     getSpotMore() {
       let that = this;
