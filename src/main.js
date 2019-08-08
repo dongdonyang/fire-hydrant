@@ -9,6 +9,7 @@ import "./plugins/BaseComponents";
 import Cookies from "js-cookie";
 import echarts from "echarts";
 
+
 Vue.prototype.$cookies = Cookies;
 Vue.prototype.$echarts = echarts;
 Vue.config.productionTip = false;

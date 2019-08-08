@@ -152,6 +152,11 @@ export default {
   /*确认框*/
   &-out {
     .el-dialog {
+      border: {
+        image: url("../assets/home_img_bg.png") 32 37 fill / 1 / 0 stretch;
+        style: solid;
+        width: 24px 24px;
+      }
       width: 500px;
       height: 300px;
       background-color: #0c274c;

@@ -25,12 +25,12 @@
               :label="item.label"
             >
               <div v-if="index === 5" class="hydrant-list-hydrant-ele">
-                {{ `剩余电量 ${form[item.value]}%` }}
+                {{ `剩余电量 ${form[item.value]} %` }}
               </div>
               <div v-else-if="index === 3">
                 {{ getStatus[form[item.value]] }}
               </div>
-              <div v-else>{{ form[item.value] }}</div>
+              <div v-else>{{ form[item.value] }} {{ item.unit }}</div>
             </el-form-item>
           </el-form>
         </div>
@@ -55,9 +55,6 @@
         </div>
       </div>
     </base-dialog>
-
-    <!--    todo 地图-->
-    <base-map @getDetail="getHydrantDetail" :is-show="false"></base-map>
   </div>
 </template>
 
@@ -69,14 +66,12 @@
 import BaseTable from "../components/BaseTable";
 import BaseDialog from "../components/BaseDialog";
 import BasePage from "../components/BasePage";
-import BaseMap from "../components/BaseMap";
 export default {
   name: "HydrantList",
   components: {
     BaseTable,
     BaseDialog,
-    BasePage,
-    BaseMap
+    BasePage
   },
   props: {
     activeName: String,
@@ -114,14 +109,14 @@ export default {
         },
         {
           label: "水压：",
-          value: "pressure"
+          value: "pressure",
+          unit: "KPa"
         },
         {
           img: require("../assets/electric.png"),
           label: "电量：",
           info: "剩余电量 ",
-          value: "dumpEnergy",
-          unit: "%"
+          value: "dumpEnergy"
         }
       ],
       //  todo 报警历史

@@ -24,6 +24,7 @@
             </el-form-item>
           </el-form>
         </div>
+
         <div>
           <sub-title title="警情处理"></sub-title>
           <el-form class="police-record-records police-record-handle">
@@ -32,37 +33,44 @@
               :key="index"
               :label="item.label"
             >
+              <!--              状态-->
+              <div v-if="index === 0">
+                {{ handleStatus[recordForm[item.value]] }}
+              </div>
               <!--              声音-->
               <div
-                v-if="
-                  index === 2 &&
+                v-else-if="
+                  index === 4 &&
                     recordForm.problemRemarkType === 2 &&
                     recordForm.problemRemark
                 "
               >
-                <audio style="width: 216px;height: 40px;" controls="controls">
-                  <source
-                    :src="
-                      `http://fd.sctsjkj.com:5081${recordForm.problemRemark}`
-                    "
-                    type="audio/amr"
-                  />
-                </audio>
+                <el-button
+                  class="police-record-records-but"
+                  v-if="playTime"
+                  type="success"
+                  size="mini"
+                  @click="playVoice"
+                >
+                  <img height="14px" src="../assets/zbxc_img_04.png" />
+                  <span>{{ `${playTime}''` }}</span>
+                </el-button>
               </div>
               <!--              文字备注-->
               <div
-                v-else-if="index === 2 && recordForm.problemRemarkType === 1"
+                v-else-if="index === 4 && recordForm.problemRemarkType === 1"
               >
                 {{ recordForm.problemRemark }}
               </div>
               <!--              照片-->
-              <div v-if="index === 3">
+              <div v-else-if="index === 5">
                 <el-image
                   v-for="index in recordForm.arr"
                   :key="index"
                   style="width: 170px; height: 110px;margin: 10px"
                   :src="index"
                   alt=""
+                  fit="cover"
                   :preview-src-list="recordForm.arr"
                 >
                 </el-image>
@@ -99,6 +107,10 @@ export default {
   },
   data() {
     return {
+      amr: Object,
+      playerUrl: Object,
+      playTime: "",
+      handleStatus: ["未处理", "处理中", "已解决"],
       //警情记录详情
       recordForm: {},
       recordFormList: [
@@ -126,15 +138,21 @@ export default {
       recordFormHandle: [
         {
           label: "状态：",
-          value: "sn"
+          value: "handleStatus"
         },
         {
           label: "时间：",
           value: "solutionTime"
         },
         {
-          value: "problemRemark"
+          label: "处理人：",
+          value: "handleUser"
         },
+        {
+          label: "联系方式：",
+          value: "phone"
+        },
+        {},
         {
           value: "phtosPath"
         }
@@ -200,6 +218,8 @@ export default {
     },
     // todo 查看警情列表详情
     getHydrantListDetail(item) {
+      let that = this;
+      that.playTime = 0;
       this.$axios
         .get(this.API.GET_HYDRANT_ALARM_INFO, {
           params: { AlarmID: item.alarmId }
@@ -218,14 +238,37 @@ export default {
                 ? this.$set(this.recordForm, "position", p)
                 : "未获取到位置信息";
             });
-            //  图片添加地址前缀
+            //  todo 图片添加地址前缀
             if (this.recordForm.phtosPath.length) {
               this.recordForm.arr = this.recordForm.phtosPath.map(i => {
                 return `http://fd.sctsjkj.com:5081${i}`;
               });
             }
+            //  todo 创建语音对象
+            if (
+              this.recordForm.problemRemarkType === 2 &&
+              this.recordForm.problemRemark
+            ) {
+              this.playerUrl = `http://fd.sctsjkj.com:5081${
+                this.recordForm.problemRemark
+              }`;
+              // todo、转码创建音频播放对象
+              let BenzAMRRecorder = require("benz-amr-recorder");
+              this.amr = new BenzAMRRecorder(); //创建
+              this.amr.initWithUrl(this.playerUrl).then(function() {
+                that.playTime = that.amr.getDuration(); // 时长
+              });
+            }
           }
         });
+    },
+    // todo 语音播放 ，解码
+    playVoice() {
+      let that = this;
+      this.amr.play(); //播放
+      this.amr.onEnded(function() {
+        that.$message.success("播放完毕");
+      });
     }
   }
 };
@@ -235,6 +278,11 @@ export default {
 .police-record {
   &-detail {
     padding: 0 80px;
+    & > :first-child {
+      form > :last-child {
+        width: 100%;
+      }
+    }
   }
   /*弹窗*/
   /*  警情详情-form*/
@@ -251,17 +299,30 @@ export default {
         color: #fff;
       }
     }
+    /*语音按钮*/
+    &-but {
+      margin-left: 10px;
+      & > :first-child {
+        display: flex;
+        align-items: center;
+        img {
+          margin-right: 5px;
+        }
+      }
+    }
   }
   &-handle {
-    & > :nth-child(3),
-    :nth-child(4) {
+    & > :nth-child(5),
+    :nth-child(6) {
       min-width: 100%;
     }
   }
+  /*照片详情*/
   .el-icon-full-screen,
   .el-icon-c-scale-to-original,
   .el-image-viewer__btn,
-  .el-image-viewer__next {
+  .el-image-viewer__next,
+  .el-icon-refresh-left {
     min-width: 0 !important;
   }
 }

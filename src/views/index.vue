@@ -129,6 +129,9 @@ export default {
   & > :nth-child(1) {
     flex: 1 0 auto;
     background-color: #00060e !important;
+    & > :first-child {
+      background-color: #00060e !important;
+    }
   }
   & > :nth-child(2) {
     width: 552px;
