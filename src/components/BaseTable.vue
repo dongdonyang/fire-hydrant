@@ -28,6 +28,11 @@
           {{ getName(scope.row[item.prop], item, "label") }}
         </span>
 
+        <!--        todo  电量百分比-->
+        <span v-else-if="item.num"
+          >{{ scope.row[item.prop] * 100 }}{{ item.unit }}</span
+        >
+
         <!--          todo 默认数据-->
         <span v-else>{{ scope.row[item.prop] }}{{ item.unit }}</span>
       </template>
@@ -89,8 +94,7 @@ export default {
         },
         {
           label: "处理中",
-          value: 2,
-          className: "correct"
+          value: 2
         },
         {
           label: "已解决",

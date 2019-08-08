@@ -6,7 +6,7 @@
     <el-container>
       <base-aside @getList="setAreaId"></base-aside>
       <el-main>
-        <base-map></base-map>
+        <base-map :areaId="areaId"></base-map>
         <div class="home-index-tab">
           <el-tabs v-model="activeName" type="card">
             <el-tab-pane label="消火栓列表" name="first"
@@ -71,7 +71,6 @@ export default {
   methods: {
     // todo id 赋值
     setAreaId(id) {
-      this.activeName = "first";
       this.areaId = +id;
     }
   }

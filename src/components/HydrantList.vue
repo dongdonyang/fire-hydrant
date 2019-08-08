@@ -25,7 +25,7 @@
               :label="item.label"
             >
               <div v-if="index === 5" class="hydrant-list-hydrant-ele">
-                {{ `剩余电量 ${form[item.value]} %` }}
+                {{ `剩余电量 ${form[item.value] * 100} %` }}
               </div>
               <div v-else-if="index === 3">
                 {{ getStatus[form[item.value]] }}
@@ -138,7 +138,7 @@ export default {
         ],
         table: [],
         page: {
-          MaxResultCount: 8,
+          MaxResultCount: 7,
           current: 1,
           total: 0
         }
@@ -157,7 +157,8 @@ export default {
           {
             prop: "dumpEnergy",
             label: "电量",
-            unit: "%"
+            unit: "%",
+            num: "100"
           },
           {
             prop: "status",
@@ -184,6 +185,8 @@ export default {
     },
     areaId: function(id) {
       this.tableHydrant.page.AreaId = id;
+      this.tableHydrant.page.SkipCount = 0;
+      this.tableHydrant.page.current = 1;
       this.getRecordList();
     }
   },
@@ -306,7 +309,7 @@ export default {
     width: 760px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 0.5fr 1.1fr;
+    grid-template-rows: 0.5fr 1fr;
     grid-gap: 10px;
     & > :nth-child(2) {
       grid-column-start: 2;
@@ -341,8 +344,10 @@ export default {
     }
     /*电量图标*/
     &-ele::before {
-      content: none;
+      content: " 123 ";
+      color: transparent;
       background-image: url("../assets/electric.png");
+      background-position-y: -4px;
     }
   }
 }

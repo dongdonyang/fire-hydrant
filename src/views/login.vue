@@ -35,12 +35,12 @@
         </el-form-item>
       </el-form>
     </div>
-    <div>
-      <p>
-        <img src="../assets/login-message.png" />
-        <span>{{ message }}</span>
-      </p>
-    </div>
+<!--    <div>-->
+<!--      <p>-->
+<!--        <img src="../assets/login-message.png" />-->
+<!--        <span>{{ message }}</span>-->
+<!--      </p>-->
+<!--    </div>-->
   </div>
 </template>
 

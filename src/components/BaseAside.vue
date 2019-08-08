@@ -69,7 +69,8 @@ export default {
   background-color: transparent;
   position: absolute;
   width: 140px;
-  left: 0;
+  left: 120px;
+  top: 200px;
   z-index: 1;
   border-right-width: 0;
   .el-menu-item {

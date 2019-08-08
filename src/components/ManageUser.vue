@@ -56,6 +56,8 @@ export default {
     },
     areaId: function(id) {
       this.tableUsers.page.AreaId = id;
+      this.tableUsers.page.SkipCount = 0;
+      this.tableUsers.page.current = 1;
       this.getAdminList();
     }
   },

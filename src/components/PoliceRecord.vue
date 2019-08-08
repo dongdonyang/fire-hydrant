@@ -29,6 +29,15 @@
           <sub-title title="警情处理"></sub-title>
           <el-form class="police-record-records police-record-handle">
             <el-form-item
+              v-if="
+                recordForm.handleStatus === 0 || recordForm.handleStatus === 1
+              "
+              label="状态"
+            >
+              <span>待处理</span>
+            </el-form-item>
+            <el-form-item
+              v-else
               v-for="(item, index) in recordFormHandle"
               :key="index"
               :label="item.label"
@@ -37,6 +46,7 @@
               <div v-if="index === 0">
                 {{ handleStatus[recordForm[item.value]] }}
               </div>
+
               <!--              声音-->
               <div
                 v-else-if="
@@ -110,7 +120,7 @@ export default {
       amr: Object,
       playerUrl: Object,
       playTime: "",
-      handleStatus: ["未处理", "处理中", "已解决"],
+      handleStatus: ["未定义", "未处理", "处理中", "已解决"],
       //警情记录详情
       recordForm: {},
       recordFormList: [
@@ -197,6 +207,8 @@ export default {
     },
     areaId: function(id) {
       this.tableRecord.page.AreaId = id;
+      this.tableRecord.page.SkipCount = 0;
+      this.tableRecord.page.current = 1;
       this.getHydrantList();
     }
   },

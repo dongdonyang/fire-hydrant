@@ -6,9 +6,9 @@ const API = {
   UPDATE_HYRANT_SET: `${base}HydrantAlarm/UpdateHyrantSet`, //更新消火栓设置
   GET_AREA_HYDRANT: `${base}HydrantAlarm/GetAreaHydrant`, //获取区域消火栓列表
   GET_INFO_BYID: `${base}Hydrant/GetInfoById`, //获取消火栓详情
-  GET_HYDRANT_BREATHING_BUBBLE: `${base}/BigScreen/GetHydrantBreathingBubble`, //消火栓：地图呼吸气泡层
+  GET_HYDRANT_BREATHING_BUBBLE: `${base}BigScreen/GetHydrantBreathingBubble`, //消火栓：地图呼吸气泡层
   GET_NEARBY_ALARMBYID: `${base}Hydrant/GetNearbyAlarmById`, //获取最近30天报警记录
-  GET_HYDRANT_PRESS_HISTORY: `${base}/BigScreen/GetHydrantPressHistory`, // 消火栓：历史水压
+  GET_HYDRANT_PRESS_HISTORY: `${base}BigScreen/GetHydrantPressHistory`, // 消火栓：历史水压
   GET_AREA_HYDRANT_ALARM_LIST: `${base}HydrantAlarm/GetAreaHydrantAlarmlist`, //获区域取消火栓报警列表
   GET_HYDRANT_ALARM_INFO: `${base}HydrantAlarm/GetHydrantAlarmInfo`, //获取警情处理详情
   USER_LOGIN: `${base}HydrantUser/UserLogin`, //      用户登录(PC端)
