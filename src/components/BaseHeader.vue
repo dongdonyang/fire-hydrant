@@ -14,7 +14,7 @@
     </div>
 
     <!--    todo 系统设置-->
-<!--    todo 写法可以优化成for循环-->
+    <!--    todo 写法可以优化成for循环-->
     <base-dialog ref="BaseDialog">
       <div class="base-header-dia">
         <sub-title title="水压报警阈值设置"></sub-title>
@@ -24,7 +24,8 @@
             type="number"
             step="0.01"
             max="999"
-            v-model="form.pressureMin"
+            v-model="form.pressureMax"
+            @change="setChange"
           >
             <span slot="suffix">KPa</span>
           </el-input>
@@ -36,7 +37,8 @@
             type="number"
             step="0.01"
             min="-999"
-            v-model="form.pressureMax"
+            v-model="form.pressureMin"
+            @change="setChange"
           >
             <span slot="suffix">KPa</span>
           </el-input>
@@ -51,6 +53,9 @@
             min="0"
             max="100"
             v-model="form.dumpEnergy"
+            @change="
+              () => (form.dumpEnergy > 100 ? (form.dumpEnergy = 100) : '')
+            "
           >
             <span slot="suffix">%</span>
           </el-input>
@@ -96,6 +101,15 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    //todo 最大值个最小值交换
+    setChange() {
+      this.form.pressureMin - this.form.pressureMax > 0
+        ? ([this.form.pressureMin, this.form.pressureMax] = [
+            this.form.pressureMax,
+            this.form.pressureMin
+          ])
+        : "";
+    },
     // todo 获取消火栓设置
     setting() {
       this.axios.get(this.API.GET_HYRANT_SET).then(res => {

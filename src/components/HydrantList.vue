@@ -24,7 +24,7 @@
               :key="index"
               :label="item.label"
             >
-              <div v-if="index === 5" class="hydrant-list-hydrant-ele">
+              <div v-if="index === 5" :class="getEleClass()">
                 {{ `剩余电量 ${form[item.value] * 100} %` }}
               </div>
               <div v-else-if="index === 3">
@@ -79,6 +79,7 @@ export default {
   },
   data() {
     return {
+      batteryArray: [1, 2, 3, 4, 5],
       getStatus: {
         0: "未指定",
         1: "正常在线",
@@ -193,6 +194,13 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    // todo 获取电池图标
+    getEleClass() {
+      let val = Math.ceil(Number(this.form.dumpEnergy) / 0.3);
+      let v = `hydrant-list-hydrant-ele${this.batteryArray[val]}`;
+      console.log("class", v);
+      return v;
+    },
     // todo 获取消火栓列表
     getRecordList() {
       this.axios
@@ -309,7 +317,7 @@ export default {
     width: 760px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 0.5fr 1fr;
+    grid-template-rows: 1fr 220px;
     grid-gap: 10px;
     & > :nth-child(2) {
       grid-column-start: 2;
@@ -343,11 +351,32 @@ export default {
       }
     }
     /*电量图标*/
-    &-ele::before {
+    .battery {
       content: " 123 ";
       color: transparent;
-      background-image: url("../assets/electric.png");
+      padding-right: 5px;
+      background-repeat: no-repeat;
       background-position-y: -4px;
+    }
+    &-ele1::before {
+      @extend .battery;
+      background-image: url("../assets/element1.png");
+    }
+    &-ele2::before {
+      @extend .battery;
+      background-image: url("../assets/element2.png");
+    }
+    &-ele3::before {
+      @extend .battery;
+      background-image: url("../assets/element3.png");
+    }
+    &-ele4::before {
+      @extend .battery;
+      background-image: url("../assets/element4.png");
+    }
+    &-ele5::before {
+      @extend .battery;
+      background-image: url("../assets/element5.png");
     }
   }
 }
