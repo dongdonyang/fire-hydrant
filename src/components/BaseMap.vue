@@ -150,11 +150,19 @@ export default {
   methods: {
     // todo 初始化地图
     newMap() {
+      let that = this;
       this.map = new AMap.Map("baseMap", {
         resizeEnable: true, //是否监控地图容器尺寸变化
         zoom: 11, //初始化地图层级
         mapStyle: "amap://styles/darkblue", // 地图风格、极夜蓝
         showLabel: false
+        // dragEnable: false,
+        // zoomEnable: false,
+        // keyboardEnable: false
+      });
+      // 平移结束后出发，打印中心点位置
+      this.map.on("moveend", function() {
+        console.log("中心点", that.map.getCenter());
       });
     },
     getUnitInfo(val) {
@@ -223,6 +231,14 @@ export default {
             }
             // 地图自适应
             that.map.setFitView();
+            that.map.setZoom(13); // 设置缩放级别
+            console.log("中心点", that.map.getCenter());
+            that.map.setStatus({
+              dragEnable: false,
+              zoomEnable: false,
+              keyboardEnable: false
+            }); // 更改属性
+            that.map.panTo([104.18586683839555, 30.68267255454134]); // 设置偏移量
           }
         });
       });
