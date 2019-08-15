@@ -4,7 +4,7 @@
 
     <!--    todo 消火栓详情-->
     <base-dialog ref="hydrantDetail">
-      <div class="hydrant-list-hydrant">
+      <div class="map-list-hydrant">
         <!--        todo 基本信息-->
         <div>
           <sub-title title="基本信息"></sub-title>
@@ -347,10 +347,10 @@ export default {
 
 <style lang="scss">
 /*消火栓*/
-.hydrant-list-hydrant {
+.map-list-hydrant {
   width: 760px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 300px 1fr;
   grid-template-rows: 1fr 220px;
   grid-gap: 10px;
   & > :nth-child(2) {
